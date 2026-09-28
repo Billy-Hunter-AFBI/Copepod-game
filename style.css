@@ -64,3 +64,30 @@ canvas {
     margin-top: 15px;
     opacity: 0.7;
 }
+
+/* -------------------------
+   RESTART BUTTON
+   ------------------------- */
+
+#restartButton {
+    display: none;
+
+    margin: 20px auto;
+
+    padding: 12px 25px;
+
+    font-family: monospace;
+    font-size: 20px;
+    font-weight: bold;
+
+    background-color: white;
+    color: #071c2c;
+
+    border: none;
+
+    cursor: pointer;
+}
+
+#restartButton:hover {
+    background-color: #9acd32;
+}
