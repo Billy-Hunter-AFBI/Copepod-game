@@ -48,6 +48,59 @@ document.addEventListener("keyup", function(event) {
     keys[event.key] = false; 
 }); 
 
+// ============================================================ 
+// TOUCH CONTROLS 
+// ============================================================ 
+
+let touchActive = false; 
+let touchX = 0; 
+let touchY = 0; 
+
+
+// Convert screen position to canvas position 
+function getTouchPosition(event) { 
+
+    const rect = canvas.getBoundingClientRect(); 
+
+    const scaleX = canvas.width / rect.width; 
+    const scaleY = canvas.height / rect.height; 
+
+    const touch = event.touches[0]; 
+
+    touchX = (touch.clientX - rect.left) * scaleX; 
+    touchY = (touch.clientY - rect.top) * scaleY; 
+} 
+
+
+canvas.addEventListener("touchstart", function(event) { 
+
+    event.preventDefault(); 
+
+    touchActive = true; 
+
+    getTouchPosition(event); 
+
+}); 
+
+
+canvas.addEventListener("touchmove", function(event) { 
+
+    event.preventDefault(); 
+
+    getTouchPosition(event); 
+
+}); 
+
+
+canvas.addEventListener("touchend", function(event) { 
+
+    event.preventDefault(); 
+
+    touchActive = false; 
+
+}); 
+
+
 
 // ============================================================ 
 // CREATE A NEW DIATOM 
@@ -103,6 +156,28 @@ function gameLoop() {
     if (keys["ArrowRight"]) { 
         copepodX += speed; 
     } 
+
+    // -------------------------------------------------------- 
+// TOUCH MOVEMENT 
+// -------------------------------------------------------- 
+
+if (touchActive) { 
+
+    const copepodCentreX = copepodX + copepodWidth / 2; 
+    const copepodCentreY = copepodY + copepodHeight / 2; 
+
+    const dx = touchX - copepodCentreX; 
+    const dy = touchY - copepodCentreY; 
+
+    const distance = Math.sqrt(dx * dx + dy * dy); 
+
+    if (distance > 5) { 
+
+        copepodX += (dx / distance) * speed; 
+        copepodY += (dy / distance) * speed; 
+    } 
+} 
+
 
 
     // -------------------------------------------------------- 
