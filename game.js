@@ -21,10 +21,10 @@ const speed = 4;
 let diatomX = 700; 
 let diatomY = 200; 
 
-const diatomWidth = 12; 
-const diatomHeight = 12; 
+const diatomWidth = 20; 
+const diatomHeight = 10; 
 
-const diatomSpeed = 1; 
+const diatomSpeed = 1.25; 
 
 
 // ============================================================ 
@@ -168,14 +168,19 @@ function gameLoop() {
     // DRAW DIATOM 
     // -------------------------------------------------------- 
 
-    ctx.fillStyle = "lime"; 
+    ctx.fillStyle = "#9acd32"; 
 
     ctx.fillRect( 
-        diatomX, 
-        diatomY, 
-        30, 
-        30 
+        diatomX + 10, 
+        diatomY + 5, 
+        10, 
+        5,
+        0,
+        0,
+        Math.PI * 2
     ); 
+
+    ctx.fill();
 
 
     // -------------------------------------------------------- 
