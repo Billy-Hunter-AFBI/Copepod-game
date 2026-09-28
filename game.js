@@ -385,8 +385,6 @@ for (let i = 0; i < fish.length; i++) {
         diatomY + 5, 
         10, 
         5,
-        0,
-        0,
         Math.PI * 2
     ); 
 
