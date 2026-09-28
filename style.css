@@ -1,0 +1,62 @@
+/* -------------------------
+   PAGE
+   ------------------------- */
+
+body {
+    margin: 0;
+    background-color: #071c2c;
+    color: white;
+
+    font-family: Arial, sans-serif;
+
+    display: flex;
+    justify-content: center;
+
+    min-height: 100vh;
+}
+
+
+/* -------------------------
+   GAME CONTAINER
+   ------------------------- */
+
+.game-container {
+    text-align: center;
+    padding: 30px 20px;
+}
+
+
+/* -------------------------
+   TITLE
+   ------------------------- */
+
+h1 {
+    margin-bottom: 20px;
+    letter-spacing: 8px;
+}
+
+
+/* -------------------------
+   GAME CANVAS
+   ------------------------- */
+
+canvas {
+    display: block;
+
+    max-width: 100%;
+    height: auto;
+
+    border: 4px solid white;
+
+    image-rendering: pixelated;
+}
+
+
+/* -------------------------
+   INSTRUCTIONS
+   ------------------------- */
+
+.instructions {
+    margin-top: 15px;
+    opacity: 0.7;
+}
