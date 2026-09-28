@@ -168,13 +168,13 @@ function gameLoop() {
     // DRAW DIATOM 
     // -------------------------------------------------------- 
 
-    ctx.fillStyle = "#7ed957"; 
+    ctx.fillStyle = "lime"; 
 
     ctx.fillRect( 
         diatomX, 
         diatomY, 
-        diatomWidth, 
-        diatomHeight 
+        30, 
+        30 
     ); 
 
 
