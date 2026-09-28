@@ -1,5 +1,6 @@
 const canvas = document.getElementById("game"); 
 const ctx = canvas.getContext("2d"); 
+const restartButton = document.getElementById("restartButton");
 
 // ============================================================ 
 // COPEPOD 
@@ -322,8 +323,9 @@ for (let i = 0; i < fish.length; i++) {
 
     if (copepodTouchesFish(fish[i])) {
 
-        gameOver = true;
-    }
+    gameOver = true;
+
+    restartButton.style.display = "block";
 }
 
 
