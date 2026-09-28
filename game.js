@@ -176,6 +176,37 @@ function copepodTouchesFish(f) {
     );
 }
 
+// ============================================================
+// RESTART GAME
+// ============================================================
+
+function restartGame() {
+
+    // Reset score
+    food = 0;
+
+    // Reset copepod
+    copepodX = 100;
+    copepodY = 250;
+
+    // Remove all fish
+    fish = [];
+
+    // Reset fish timer
+    fishSpawnTimer = 0;
+
+    // Reset diatom
+    resetDiatom();
+
+    // Game is running again
+    gameOver = false;
+
+    // Hide restart button
+    restartButton.style.display = "none";
+}
+
+restartButton.addEventListener("click", restartGame);
+
 
 
 // ============================================================ 
