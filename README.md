@@ -2,7 +2,7 @@
 
 A simple browser-based educational game inspired by marine food webs.
 
-In this game, you control a copepod, collect drifting diatoms to increase your food score, and avoid predatory fish. The objective is to survive for as long as possible while gathering food from the surrounding plankton-rich environment. The lateral movement of the sprite is restricted to mimic the fact that copepods are weak swimmers. The vertical motion is more rapid to mimic the dramatic daily vertical migrations that copepods make between deep and shallow water to feed. 
+In this game, you control a copepod, collect drifting diatoms to increase your food score, and avoid predatory fish. The objective is to survive for as long as possible while gathering food from the surrounding plankton-rich environment. The lateral movement of the sprite is restricted to mimic the fact that copepods are weak swimmers. The vertical motion is more rapid to mimic the dramatic daily vertical migrations that copepods make between deep and shallow water to feed. Diatoms spawn close to the sea surface and slowly drift towards the bottom as they sink. Both Copepod and the diatoms can be caught by currents moving laterally.
 
 ---
 
