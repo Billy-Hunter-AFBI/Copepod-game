@@ -601,18 +601,116 @@ function gameLoop() {
     }
 
 
-    // --------------------------------------------------------
-    // COPEPOD
-    // --------------------------------------------------------
+// --------------------------------------------------------
+// COPEPOD
+// --------------------------------------------------------
 
-    ctx.fillStyle = "#f0b450";
+// Main body
+ctx.fillStyle = "#f0b450";
 
-    ctx.fillRect(
-        copepodX,
-        copepodY,
-        copepodWidth,
-        copepodHeight
-    );
+ctx.fillRect(
+    copepodX + 4,
+    copepodY,
+    16,
+    10
+);
+
+// Tapered rear section
+ctx.fillRect(
+    copepodX,
+    copepodY + 2,
+    6,
+    6
+);
+
+// Tail
+ctx.fillRect(
+    copepodX - 5,
+    copepodY + 3,
+    5,
+    2
+);
+
+
+// --------------------------------------------------------
+// ANTENNAE
+// --------------------------------------------------------
+
+ctx.strokeStyle = "#f0b450";
+ctx.lineWidth = 2;
+
+
+// Upper antenna
+ctx.beginPath();
+
+ctx.moveTo(
+    copepodX + 18,
+    copepodY + 2
+);
+
+ctx.lineTo(
+    copepodX + 30,
+    copepodY - 6
+);
+
+ctx.lineTo(
+    copepodX + 42,
+    copepodY - 10
+);
+
+ctx.stroke();
+
+
+// Lower antenna
+ctx.beginPath();
+
+ctx.moveTo(
+    copepodX + 18,
+    copepodY + 8
+);
+
+ctx.lineTo(
+    copepodX + 30,
+    copepodY + 16
+);
+
+ctx.lineTo(
+    copepodX + 42,
+    copepodY + 20
+);
+
+ctx.stroke();
+
+
+// --------------------------------------------------------
+// TAIL RAMI
+// --------------------------------------------------------
+
+ctx.beginPath();
+
+ctx.moveTo(
+    copepodX - 4,
+    copepodY + 4
+);
+
+ctx.lineTo(
+    copepodX - 10,
+    copepodY
+);
+
+ctx.moveTo(
+    copepodX - 4,
+    copepodY + 6
+);
+
+ctx.lineTo(
+    copepodX - 10,
+    copepodY + 10
+);
+
+ctx.stroke();
+
+
 
 
     // --------------------------------------------------------
