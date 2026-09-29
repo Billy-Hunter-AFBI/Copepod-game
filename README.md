@@ -2,7 +2,7 @@
 
 A simple browser-based educational game inspired by marine food webs.
 
-In this game, you control a copepod, collect drifting diatoms to increase your food score, and avoid predatory fish. The objective is to survive for as long as possible while gathering food from the surrounding plankton-rich environment.
+In this game, you control a copepod, collect drifting diatoms to increase your food score, and avoid predatory fish. The objective is to survive for as long as possible while gathering food from the surrounding plankton-rich environment. The lateral movement of the sprite is restricted to mimic the fact that copepods are weak swimmers. The vertical motion is more rapid to mimic the dramatic daily vertical migrations that copepods make between deep and shallow water to feed. 
 
 ---
 
@@ -27,6 +27,12 @@ Players experience the ecological challenge of finding food while avoiding preda
 - Collect diatoms to increase your food score.
 - Avoid predatory fish.
 - Survive as long as possible.
+
+### Ecological Constraints
+
+- Lateral movement of the sprite is slow, as copepods are weak swimmers.
+- Vertical movement is more rapid, to mimic diel vertical migration.
+- Episodic Currents provide opportunities to move more rapidly across the playing area.
 
 ### Scoring
 
@@ -93,6 +99,11 @@ Touch controls support:
 - Random vertical positions
 - Move from right to left across the screen
 - Cause game over upon collision
+
+### Currents
+
+- Currents appear episodically moving in a left-right or right-left direction
+- Moving the copepod into the current provides a way to move rapidly across the screen in on direction
 
 ### Scoring System
 
