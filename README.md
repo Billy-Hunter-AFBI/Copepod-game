@@ -179,8 +179,6 @@ It is intended for outreach, education and science communication activities.
 Potential future additions include:
 
 - Fish produce faecal pellets, which can be eaten as a higher value food source
-- Diatoms spawn close to the sea surface and gradually sink
-- Predator and food density is higher close to the top (sea surface)
 - Multiple predator species
 - Increasing difficulty levels
 - Animated sprites
