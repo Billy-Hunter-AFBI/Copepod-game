@@ -18,23 +18,28 @@ let copepodY = 250;
 const copepodWidth = 20;
 const copepodHeight = 10;
 
-// Copepods have much greater control over vertical movement
-// than horizontal movement.
+// Strong vertical swimming, weak horizontal swimming
 const verticalSpeed = 4;
 const horizontalSpeed = 1.5;
 
 
 // ============================================================
-// DIATOM
+// DIATOMS
 // ============================================================
 
-let diatomX = 700;
-let diatomY = 200;
+let diatoms = [];
 
 const diatomWidth = 20;
 const diatomHeight = 10;
 
-const diatomSpeed = 1.25;
+// General movement through the water
+const diatomDriftSpeed = 0.5;
+
+// Slow gravitational sinking
+const diatomSinkSpeed = 0.18;
+
+// Number of diatoms normally present
+const targetDiatomCount = 8;
 
 
 // ============================================================
@@ -55,6 +60,7 @@ const fishSpawnInterval = 180;
 let currentActive = false;
 
 let currentY = 0;
+
 const currentHeight = 100;
 
 let currentStrength = 0;
@@ -152,16 +158,55 @@ canvas.addEventListener("touchend", function(event) {
 
 
 // ============================================================
-// RESET DIATOM
+// CREATE DIATOM
 // ============================================================
 
-function resetDiatom() {
+function spawnDiatom(randomX = false) {
 
-    diatomX = canvas.width + 20;
+    const newDiatom = {
 
-    diatomY =
-        Math.random() *
-        (canvas.height - diatomHeight);
+        // At the beginning of the game, distribute diatoms
+        // across the screen. New diatoms subsequently enter
+        // from the right-hand side.
+        x: randomX
+            ? Math.random() * canvas.width
+            : canvas.width + Math.random() * 100,
+
+        // Diatoms originate in the upper 25% of the water
+        y: Math.random() * (canvas.height * 0.25),
+
+        width: diatomWidth,
+        height: diatomHeight,
+
+        // Slight variation in sinking rate
+        sinkSpeed:
+            diatomSinkSpeed *
+            (0.7 + Math.random() * 0.6)
+
+    };
+
+    diatoms.push(newDiatom);
+
+}
+
+
+// ============================================================
+// INITIALISE DIATOMS
+// ============================================================
+
+function initialiseDiatoms() {
+
+    diatoms = [];
+
+    for (
+        let i = 0;
+        i < targetDiatomCount;
+        i++
+    ) {
+
+        spawnDiatom(true);
+
+    }
 
 }
 
@@ -197,17 +242,17 @@ function spawnFish() {
 // DIATOM COLLISION
 // ============================================================
 
-function copepodTouchesDiatom() {
+function copepodTouchesDiatom(d) {
 
     return (
 
-        copepodX < diatomX + diatomWidth &&
+        copepodX < d.x + d.width &&
 
-        copepodX + copepodWidth > diatomX &&
+        copepodX + copepodWidth > d.x &&
 
-        copepodY < diatomY + diatomHeight &&
+        copepodY < d.y + d.height &&
 
-        copepodY + copepodHeight > diatomY
+        copepodY + copepodHeight > d.y
 
     );
 
@@ -236,6 +281,25 @@ function copepodTouchesFish(f) {
 
 
 // ============================================================
+// CHECK WHETHER AN OBJECT IS IN THE CURRENT
+// ============================================================
+
+function objectInCurrent(y, height) {
+
+    return (
+
+        currentActive &&
+
+        y + height > currentY &&
+
+        y < currentY + currentHeight
+
+    );
+
+}
+
+
+// ============================================================
 // RESTART GAME
 // ============================================================
 
@@ -244,7 +308,7 @@ function restartGame() {
     // Reset current score
     food = 0;
 
-    // High score deliberately NOT reset
+    // High score deliberately remains
 
     // Reset copepod
     copepodX = 100;
@@ -253,24 +317,22 @@ function restartGame() {
     // Remove fish
     fish = [];
 
-    // Reset fish spawning
     fishSpawnTimer = 0;
 
-    // Reset diatom
-    resetDiatom();
+    // Recreate diatom field
+    initialiseDiatoms();
 
     // Reset current
     currentActive = false;
     currentTimer = 0;
     currentStrength = 0;
 
-    // Reset touch
+    // Reset controls
     touchActive = false;
 
-    // Restart game
+    // Restart
     gameOver = false;
 
-    // Hide restart button
     restartButton.style.display = "none";
 
 }
@@ -337,13 +399,11 @@ function gameLoop() {
             const copepodCentreY =
                 copepodY + copepodHeight / 2;
 
-
             const dx =
                 touchX - copepodCentreX;
 
             const dy =
                 touchY - copepodCentreY;
-
 
             const distance =
                 Math.sqrt(
@@ -355,10 +415,12 @@ function gameLoop() {
             if (distance > 5) {
 
                 copepodX +=
-                    (dx / distance) * horizontalSpeed;
+                    (dx / distance) *
+                    horizontalSpeed;
 
                 copepodY +=
-                    (dy / distance) * verticalSpeed;
+                    (dy / distance) *
+                    verticalSpeed;
 
             }
 
@@ -372,7 +434,7 @@ function gameLoop() {
         currentTimer++;
 
 
-        // Start a new current
+        // Start a current
         if (
             !currentActive &&
             currentTimer >= currentInterval
@@ -403,13 +465,15 @@ function gameLoop() {
         }
 
 
-        // Push copepod if it is inside the current
+        // ----------------------------------------------------
+        // CURRENT AFFECTS COPEPOD
+        // ----------------------------------------------------
+
         if (
-            currentActive &&
-
-            copepodY + copepodHeight > currentY &&
-
-            copepodY < currentY + currentHeight
+            objectInCurrent(
+                copepodY,
+                copepodHeight
+            )
         ) {
 
             copepodX += currentStrength;
@@ -417,7 +481,10 @@ function gameLoop() {
         }
 
 
-        // Stop current after its duration
+        // ----------------------------------------------------
+        // STOP CURRENT
+        // ----------------------------------------------------
+
         if (
             currentActive &&
             currentTimer >= currentDuration
@@ -442,7 +509,6 @@ function gameLoop() {
 
         }
 
-
         if (
             copepodX >
             canvas.width - copepodWidth
@@ -453,13 +519,11 @@ function gameLoop() {
 
         }
 
-
         if (copepodY < 0) {
 
             copepodY = 0;
 
         }
-
 
         if (
             copepodY >
@@ -473,40 +537,105 @@ function gameLoop() {
 
 
         // ----------------------------------------------------
-        // MOVE DIATOM
+        // MOVE DIATOMS
         // ----------------------------------------------------
 
-        diatomX -= diatomSpeed;
-
-
-        if (
-            diatomX <
-            -diatomWidth
+        for (
+            let i = 0;
+            i < diatoms.length;
+            i++
         ) {
 
-            resetDiatom();
+            const d = diatoms[i];
+
+
+            // Background horizontal drift
+            d.x -= diatomDriftSpeed;
+
+
+            // Slow sinking
+            d.y += d.sinkSpeed;
+
+
+            // If inside the active current,
+            // advect the diatom with the water
+            if (
+                objectInCurrent(
+                    d.y,
+                    d.height
+                )
+            ) {
+
+                d.x += currentStrength;
+
+            }
 
         }
 
 
         // ----------------------------------------------------
-        // EAT DIATOM
+        // EAT DIATOMS
         // ----------------------------------------------------
 
-        if (copepodTouchesDiatom()) {
+        for (
+            let i = diatoms.length - 1;
+            i >= 0;
+            i--
+        ) {
 
-            food += 1;
+            if (
+                copepodTouchesDiatom(
+                    diatoms[i]
+                )
+            ) {
+
+                food += 1;
 
 
-            // Update high score
-            if (food > highScore) {
+                if (food > highScore) {
 
-                highScore = food;
+                    highScore = food;
+
+                }
+
+
+                // Remove eaten diatom
+                diatoms.splice(i, 1);
 
             }
 
+        }
 
-            resetDiatom();
+
+        // ----------------------------------------------------
+        // REMOVE DIATOMS THAT LEAVE THE WORLD
+        // ----------------------------------------------------
+
+        diatoms = diatoms.filter(
+            function(d) {
+
+                return (
+
+                    d.x > -100 &&
+                    d.x < canvas.width + 150 &&
+                    d.y < canvas.height + 20
+
+                );
+
+            }
+        );
+
+
+        // ----------------------------------------------------
+        // REPLACE LOST / EATEN DIATOMS
+        // ----------------------------------------------------
+
+        while (
+            diatoms.length <
+            targetDiatomCount
+        ) {
+
+            spawnDiatom(false);
 
         }
 
@@ -617,7 +746,6 @@ function gameLoop() {
 
     if (currentActive) {
 
-        // Slightly lighter band of water
         ctx.fillStyle =
             "rgba(150, 220, 255, 0.12)";
 
@@ -629,7 +757,6 @@ function gameLoop() {
         );
 
 
-        // Current arrows
         ctx.fillStyle =
             "rgba(255, 255, 255, 0.4)";
 
@@ -652,7 +779,8 @@ function gameLoop() {
             ctx.fillText(
                 arrow,
                 x,
-                currentY + currentHeight / 2
+                currentY +
+                currentHeight / 2
             );
 
         }
@@ -661,30 +789,41 @@ function gameLoop() {
 
 
     // --------------------------------------------------------
-    // DIATOM
+    // DRAW DIATOMS
     // --------------------------------------------------------
 
-    ctx.fillStyle = "#9acd32";
+    for (
+        let i = 0;
+        i < diatoms.length;
+        i++
+    ) {
 
-    ctx.beginPath();
+        const d = diatoms[i];
 
-    ctx.ellipse(
-        diatomX + diatomWidth / 2,
-        diatomY + diatomHeight / 2,
 
-        diatomWidth / 2,
-        diatomHeight / 2,
+        ctx.fillStyle = "#9acd32";
 
-        0,
-        0,
-        Math.PI * 2
-    );
+        ctx.beginPath();
 
-    ctx.fill();
+        ctx.ellipse(
+            d.x + d.width / 2,
+            d.y + d.height / 2,
+
+            d.width / 2,
+            d.height / 2,
+
+            0,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fill();
+
+    }
 
 
     // --------------------------------------------------------
-    // FISH
+    // DRAW FISH
     // --------------------------------------------------------
 
     for (
@@ -748,7 +887,7 @@ function gameLoop() {
 
 
     // --------------------------------------------------------
-    // COPEPOD BODY
+    // DRAW COPEPOD
     // --------------------------------------------------------
 
     ctx.fillStyle = "#f0b450";
@@ -782,11 +921,10 @@ function gameLoop() {
 
 
     // --------------------------------------------------------
-    // COPEPOD ANTENNAE
+    // ANTENNAE
     // --------------------------------------------------------
 
     ctx.strokeStyle = "#f0b450";
-
     ctx.lineWidth = 2;
 
 
@@ -833,7 +971,7 @@ function gameLoop() {
 
 
     // --------------------------------------------------------
-    // COPEPOD TAIL RAMI
+    // TAIL RAMI
     // --------------------------------------------------------
 
     ctx.beginPath();
@@ -847,6 +985,7 @@ function gameLoop() {
         copepodX - 10,
         copepodY
     );
+
 
     ctx.moveTo(
         copepodX - 4,
@@ -886,7 +1025,7 @@ function gameLoop() {
 
 
     // --------------------------------------------------------
-    // GAME OVER SCREEN
+    // GAME OVER
     // --------------------------------------------------------
 
     if (gameOver) {
@@ -954,7 +1093,9 @@ function gameLoop() {
 
 
 // ============================================================
-// START GAME
+// INITIALISE GAME
 // ============================================================
+
+initialiseDiatoms();
 
 gameLoop();
