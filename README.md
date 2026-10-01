@@ -14,6 +14,8 @@ This game represents a simplified marine food chain:
 
 ```text
 Diatom → Copepod → Fish
+            |
+            →  Basking Shark
 ```
 
 Players experience the ecological challenge of finding food while avoiding predators.
@@ -24,8 +26,9 @@ Players experience the ecological challenge of finding food while avoiding preda
 
 ### Objective
 
-- Collect diatoms to increase your food score.
+- Collect diatoms and faecal pellets to increase your food score.
 - Avoid predatory fish.
+- Avoid filter-feeding basking sharks
 - Survive as long as possible.
 
 ### Ecological Constraints
@@ -33,6 +36,7 @@ Players experience the ecological challenge of finding food while avoiding preda
 - Lateral movement of the sprite is slow, as copepods are weak swimmers.
 - Vertical movement is more rapid, to mimic diel vertical migration.
 - Episodic Currents provide opportunities to move more rapidly across the playing area.
+- Episodic Basking Sharks provide an additional hazard.
 
 ### Scoring
 
@@ -178,8 +182,6 @@ It is intended for outreach, education and science communication activities.
 
 Potential future additions include:
 
-- Fish produce faecal pellets, which can be eaten as a higher value food source
-- Multiple predator species
 - Increasing difficulty levels
 - Animated sprites
 - Sound effects
