@@ -71,6 +71,25 @@ const pelletFoodValue = 3;
 // 0.002 = approximately 0.2% chance per frame
 const pelletProductionChance = 0.002;
 
+// ============================================================
+// BASKING SHARK
+// ============================================================
+
+let baskingShark = null;
+
+let sharkTimer = 0;
+
+// First shark appears after roughly 30–60 seconds
+let nextSharkTime =
+    1800 + Math.random() * 1800;
+
+// Warning lasts about 3 seconds
+const sharkWarningDuration = 180;
+
+let sharkWarning = false;
+let sharkWarningTimer = 0;
+
+
 
 // ============================================================
 // CURRENTS
@@ -282,6 +301,31 @@ function spawnPellet(f) {
 
 }
 
+// ============================================================
+// CREATE BASKING SHARK
+// ============================================================
+
+function spawnBaskingShark() {
+
+    const sharkHeight = 120;
+
+    baskingShark = {
+
+        x: canvas.width + 180,
+
+        y:
+            Math.random() *
+            (canvas.height - sharkHeight),
+
+        width: 220,
+        height: sharkHeight,
+
+        speed: 1.4
+
+    };
+
+}
+
 
 // ============================================================
 // DIATOM COLLISION
@@ -344,6 +388,31 @@ function copepodTouchesFish(f) {
 
 }
 
+// ============================================================
+// BASKING SHARK COLLISION
+// ============================================================
+
+function copepodTouchesShark(s) {
+
+    if (!s) {
+        return false;
+    }
+
+    return (
+
+        copepodX < s.x + s.width &&
+
+        copepodX + copepodWidth > s.x &&
+
+        copepodY < s.y + s.height &&
+
+        copepodY + copepodHeight > s.y
+
+    );
+
+}
+
+
 
 // ============================================================
 // CHECK WHETHER AN OBJECT IS IN THE CURRENT
@@ -389,6 +458,18 @@ function restartGame() {
 
     // Remove Pellets
     pellets = [];
+
+    // Reset Basking Shark
+    baskingShark = null;
+
+sharkTimer = 0;
+
+sharkWarning = false;
+sharkWarningTimer = 0;
+
+nextSharkTime =
+    1800 + Math.random() * 1800;
+
 
     // Reset current
     currentActive = false;
@@ -799,6 +880,95 @@ pellets = pellets.filter(
     }
 );
 
+        // ----------------------------------------------------
+// BASKING SHARK EVENT
+// ----------------------------------------------------
+
+if (!baskingShark && !sharkWarning) {
+
+    sharkTimer++;
+
+}
+
+
+// Start warning
+if (
+    !baskingShark &&
+    !sharkWarning &&
+    sharkTimer >= nextSharkTime
+) {
+
+    sharkWarning = true;
+
+    sharkWarningTimer = 0;
+
+}
+
+
+// Count down warning
+if (sharkWarning) {
+
+    sharkWarningTimer++;
+
+
+    if (
+        sharkWarningTimer >=
+        sharkWarningDuration
+    ) {
+
+        sharkWarning = false;
+
+        spawnBaskingShark();
+
+    }
+
+}
+
+
+// Move shark
+if (baskingShark) {
+
+    baskingShark.x -=
+        baskingShark.speed;
+
+
+    // Check collision
+    if (
+        copepodTouchesShark(
+            baskingShark
+        )
+    ) {
+
+        gameOver = true;
+
+        touchActive = false;
+
+        restartButton.style.display =
+            "block";
+
+    }
+
+
+    // Shark has left screen
+    if (
+        baskingShark.x <
+        -baskingShark.width - 50
+    ) {
+
+        baskingShark = null;
+
+        sharkTimer = 0;
+
+
+        // Next event in roughly 30–60 seconds
+        nextSharkTime =
+            1800 +
+            Math.random() * 1800;
+
+    }
+
+}
+
 
 
         // ----------------------------------------------------
@@ -962,6 +1132,31 @@ pellets = pellets.filter(
 
     }
 
+    // --------------------------------------------------------
+// BASKING SHARK WARNING
+// --------------------------------------------------------
+
+if (sharkWarning) {
+
+    ctx.fillStyle = "#ffcc66";
+
+    ctx.font = "bold 26px monospace";
+
+    ctx.textAlign = "center";
+
+
+    ctx.fillText(
+        "⚠ BASKING SHARK APPROACHING ⚠",
+        canvas.width / 2,
+        100
+    );
+
+
+    ctx.textAlign = "left";
+
+}
+
+
 
     // --------------------------------------------------------
     // DRAW DIATOMS
@@ -1032,6 +1227,109 @@ for (
 
 }
 
+    // --------------------------------------------------------
+// DRAW BASKING SHARK
+// --------------------------------------------------------
+
+if (baskingShark) {
+
+    const s = baskingShark;
+
+
+    // Main body
+    ctx.fillStyle = "#657b83";
+
+    ctx.fillRect(
+        s.x + 40,
+        s.y + 30,
+        150,
+        60
+    );
+
+
+    // Head
+    ctx.fillStyle = "#708890";
+
+    ctx.fillRect(
+        s.x,
+        s.y + 35,
+        50,
+        50
+    );
+
+
+    // Huge open mouth
+    ctx.fillStyle = "#17252b";
+
+    ctx.fillRect(
+        s.x - 5,
+        s.y + 45,
+        25,
+        30
+    );
+
+
+    // Tail base
+    ctx.fillStyle = "#657b83";
+
+    ctx.fillRect(
+        s.x + 190,
+        s.y + 45,
+        30,
+        30
+    );
+
+
+    // Upper tail
+    ctx.fillRect(
+        s.x + 215,
+        s.y + 10,
+        15,
+        50
+    );
+
+
+    // Lower tail
+    ctx.fillRect(
+        s.x + 215,
+        s.y + 70,
+        15,
+        45
+    );
+
+
+    // Dorsal fin
+    ctx.beginPath();
+
+    ctx.moveTo(
+        s.x + 120,
+        s.y + 30
+    );
+
+    ctx.lineTo(
+        s.x + 145,
+        s.y
+    );
+
+    ctx.lineTo(
+        s.x + 155,
+        s.y + 30
+    );
+
+    ctx.fill();
+
+
+    // Eye
+    ctx.fillStyle = "black";
+
+    ctx.fillRect(
+        s.x + 25,
+        s.y + 40,
+        5,
+        5
+    );
+
+}
 
     // --------------------------------------------------------
     // DRAW FISH
