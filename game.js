@@ -52,6 +52,25 @@ let fishSpawnTimer = 0;
 
 const fishSpawnInterval = 180;
 
+// ============================================================
+// FAECAL PELLETS
+// ============================================================
+
+let pellets = [];
+
+const pelletWidth = 8;
+const pelletHeight = 14;
+
+// Pellets sink considerably faster than diatoms
+const pelletSinkSpeed = 1.2;
+
+// Bonus food value
+const pelletFoodValue = 3;
+
+// Chance per frame that each fish produces a pellet
+// 0.002 = approximately 0.2% chance per frame
+const pelletProductionChance = 0.002;
+
 
 // ============================================================
 // CURRENTS
@@ -237,6 +256,32 @@ function spawnFish() {
 
 }
 
+// ============================================================
+// CREATE FAECAL PELLET
+// ============================================================
+
+function spawnPellet(f) {
+
+    const newPellet = {
+
+        // Pellet emerges behind the fish
+        x: f.x + f.width,
+
+        y: f.y + f.height / 2,
+
+        width: pelletWidth,
+        height: pelletHeight,
+
+        sinkSpeed:
+            pelletSinkSpeed *
+            (0.8 + Math.random() * 0.4)
+
+    };
+
+    pellets.push(newPellet);
+
+}
+
 
 // ============================================================
 // DIATOM COLLISION
@@ -253,6 +298,26 @@ function copepodTouchesDiatom(d) {
         copepodY < d.y + d.height &&
 
         copepodY + copepodHeight > d.y
+
+    );
+
+}
+
+// ============================================================
+// FAECAL PELLET COLLISION
+// ============================================================
+
+function copepodTouchesPellet(p) {
+
+    return (
+
+        copepodX < p.x + p.width &&
+
+        copepodX + copepodWidth > p.x &&
+
+        copepodY < p.y + p.height &&
+
+        copepodY + copepodHeight > p.y
 
     );
 
@@ -321,6 +386,9 @@ function restartGame() {
 
     // Recreate diatom field
     initialiseDiatoms();
+
+    // Remove Pellets
+    pellets = [];
 
     // Reset current
     currentActive = false;
@@ -607,6 +675,7 @@ function gameLoop() {
         }
 
 
+
         // ----------------------------------------------------
         // REMOVE DIATOMS THAT LEAVE THE WORLD
         // ----------------------------------------------------
@@ -639,6 +708,98 @@ function gameLoop() {
 
         }
 
+        // ----------------------------------------------------
+// MOVE FAECAL PELLETS
+// ----------------------------------------------------
+
+for (
+    let i = 0;
+    i < pellets.length;
+    i++
+) {
+
+    const p = pellets[i];
+
+
+    // Pellets sink rapidly
+    p.y += p.sinkSpeed;
+
+
+    // Small background drift
+    p.x -= diatomDriftSpeed;
+
+
+    // Currents transport pellets laterally
+    if (
+        objectInCurrent(
+            p.y,
+            p.height
+        )
+    ) {
+
+        p.x += currentStrength;
+
+    }
+
+}
+
+
+// ----------------------------------------------------
+// EAT FAECAL PELLETS
+// ----------------------------------------------------
+
+for (
+    let i = pellets.length - 1;
+    i >= 0;
+    i--
+) {
+
+    if (
+        copepodTouchesPellet(
+            pellets[i]
+        )
+    ) {
+
+        food += pelletFoodValue;
+
+
+        if (food > highScore) {
+
+            highScore = food;
+
+        }
+
+
+        pellets.splice(i, 1);
+
+    }
+
+}
+
+
+// ----------------------------------------------------
+// REMOVE OLD FAECAL PELLETS
+// ----------------------------------------------------
+
+pellets = pellets.filter(
+    function(p) {
+
+        return (
+
+            p.y <
+            canvas.height + 20 &&
+
+            p.x > -50 &&
+
+            p.x <
+            canvas.width + 50
+
+        );
+
+    }
+);
+
+
 
         // ----------------------------------------------------
         // SPAWN FISH
@@ -664,15 +825,29 @@ function gameLoop() {
         // ----------------------------------------------------
 
         for (
-            let i = 0;
-            i < fish.length;
-            i++
-        ) {
+    let i = 0;
+    i < fish.length;
+    i++
+) {
 
-            fish[i].x -=
-                fish[i].speed;
+    const f = fish[i];
 
-        }
+    // Move fish
+    f.x -= f.speed;
+
+
+    // Occasionally produce a faecal pellet
+    if (
+        Math.random() <
+        pelletProductionChance
+    ) {
+
+        spawnPellet(f);
+
+    }
+
+}
+
 
 
         // ----------------------------------------------------
@@ -820,6 +995,42 @@ function gameLoop() {
         ctx.fill();
 
     }
+
+    // --------------------------------------------------------
+// DRAW FAECAL PELLETS
+// --------------------------------------------------------
+
+for (
+    let i = 0;
+    i < pellets.length;
+    i++
+) {
+
+    const p = pellets[i];
+
+
+    // Pellet body
+    ctx.fillStyle = "#8b5a2b";
+
+    ctx.fillRect(
+        p.x,
+        p.y,
+        p.width,
+        p.height
+    );
+
+
+    // Small lighter centre to make it visible
+    ctx.fillStyle = "#c18b52";
+
+    ctx.fillRect(
+        p.x + 2,
+        p.y + 3,
+        p.width - 4,
+        p.height - 6
+    );
+
+}
 
 
     // --------------------------------------------------------
