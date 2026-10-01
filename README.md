@@ -14,8 +14,8 @@ This game represents a simplified marine food chain:
 
 ```text
 Diatom → Copepod → Fish
-            |
-            →  Basking Shark
+            ↓
+            Basking Shark
 ```
 
 Players experience the ecological challenge of finding food while avoiding predators.
