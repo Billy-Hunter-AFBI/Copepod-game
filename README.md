@@ -1,123 +1,264 @@
 # Copepod Game
 
-A simple browser-based educational game inspired by marine food webs.
+A browser-based educational game inspired by marine food webs, plankton ecology, and ocean processes.
 
-In this game, you control a copepod, eating sinking diatoms to gain energy, and avoiding predatory fish. The objective is to survive for as long as possible while gathering food from the surrounding plankton-rich environment. If your energy drops to 0 you starve to death. The lateral movement of the sprite is restricted to mimic the fact that copepods are weak swimmers. The vertical motion is more rapid to mimic the dramatic daily vertical migrations that copepods make between deep and shallow water to feed. Diatoms spawn close to the sea surface and slowly drift towards the bottom as they sink. Both Copepod and the diatoms can be caught by currents moving laterally.
+In **Copepod Game**, players control a copepod navigating a dynamic marine environment. Feed on sinking diatoms and nutrient-rich faecal pellets to maintain energy reserves while avoiding predatory fish and filter-feeding basking sharks.
+
+The game incorporates ecological concepts including metabolic energy budgets, predator-prey interactions, ocean currents, marine heatwaves, diel vertical migration, and the biological carbon pump.
 
 ---
 
 ## 🌊 About
 
-Copepods are tiny crustaceans that play a vital role in marine ecosystems. They transfer energy from microscopic phytoplankton to larger animals including fish, seabirds and marine mammals.
+Copepods are tiny crustaceans that form a critical link between microscopic phytoplankton and larger marine animals. Despite their small size, they are among the most abundant animals on Earth and play a major role in the transfer of energy and carbon through marine ecosystems.
 
-This game represents a simplified marine food chain:
+This game represents a simplified marine food web:
 
 ```text
-Diatom → Copepod → Fish
-            ↓
-            Basking Shark
+Diatom
+   ↓
+Copepod
+   ↓
+Fish
+   ↓
+Faecal Pellets
+   ↑
+Copepod
+
+Basking Shark
+     ↓
+  Copepod
 ```
 
-Players experience the ecological challenge of finding food while avoiding predators.
-The copepod loses energy with time, and this increases with movement. This mimics the metabolic costs of living.
+Players experience the ecological challenge of balancing food acquisition, energy conservation, and predator avoidance within a changing marine environment.
 
 ---
 
-## 🎮 Gameplay
+# 🎮 Gameplay
 
-### Objective
+## Objective
 
-- Collect diatoms and faecal pellets to increase your food score.
+- Collect diatoms to gain energy.
+- Collect faecal pellets for higher-energy food rewards.
 - Avoid predatory fish.
-- Avoid filter-feeding basking sharks.
-- Survive as long as possible.
+- Avoid basking sharks.
+- Manage your energy reserves.
+- Survive for as long as possible.
 
-### Ecological Constraints
+The longer you survive, the higher your survival score.
 
-- Lateral movement of the sprite is slow, as copepods are weak swimmers.
-- Vertical movement is more rapid, to mimic diel vertical migration.
-- Episodic Currents provide opportunities to move more rapidly across the playing area.
-- Episodic Basking Sharks provide an additional hazard.
-- Episodic Marine Heatwaves increase the energetic costs of staying close to the surface.
+---
 
-### Scoring
+# ⚡ Energy and Metabolism
 
-Each diatom collected increases your energy score by one point.
-Each faecal pellet collected increases your energy score by three points.
-As time passes your energy score decreases.
+Unlike many arcade-style collection games, food acts as an **energy reserve**.
 
-### Game Over
+The copepod continuously loses energy due to:
 
-The game ends when a fish collides with the copepod.
+- Basic metabolic maintenance.
+- The energetic cost of swimming.
+- Exposure to marine heatwaves near the ocean surface.
 
-A game-over screen displays:
+Energy must be replenished through feeding.
 
-- "YOU WERE EATEN"
-- Total food collected
+### Energy Sources
+
+| Food Item | Energy Gain |
+|------------|------------|
+| Diatom | +1 |
+| Faecal Pellet | +3 |
+
+---
+
+# 🌡 Marine Heatwaves
+
+Marine heatwaves occur periodically throughout the game.
+
+During a heatwave:
+
+- The upper 35% of the water column becomes warmer.
+- A visible heatwave layer appears near the surface.
+- Remaining within the warm surface water greatly increases metabolic costs.
+- Players must balance feeding opportunities against increased energy expenditure.
+
+This reflects the increased energetic stress experienced by marine organisms during unusually warm conditions.
+
+---
+
+# 🌊 Ocean Currents
+
+Episodic currents occur throughout the game.
+
+Current events:
+
+- Appear at random depths.
+- Move either left-to-right or right-to-left.
+- Transport copepods, diatoms, and faecal pellets.
+- Can be used strategically for rapid movement across the water column.
+
+Because copepods are relatively weak horizontal swimmers, currents provide an important mechanism for transport.
+
+---
+
+# 🦈 Basking Shark Events
+
+Large filter-feeding basking sharks occasionally enter the game area.
+
+Features include:
+
+- A warning message before arrival.
+- Random timing between appearances.
+- Large sweeping movement across the screen.
+- Instant death on collision.
+
+Although basking sharks primarily feed on plankton, an encounter in this simplified game represents being captured during filter feeding.
+
+---
+
+# 🐟 Fish Predators
+
+Fish predators are continuously introduced throughout the game.
+
+Fish:
+
+- Spawn at regular intervals.
+- Swim from right to left.
+- Have variable swimming speeds.
+- Produce faecal pellets while moving.
+- Cause immediate game over upon collision.
+
+Avoiding predators while maintaining food intake forms the core challenge of the game.
+
+---
+
+# 💩 Faecal Pellets
+
+Faecal pellets are produced by fish as they swim.
+
+Pellets:
+
+- Sink rapidly through the water column.
+- Drift with ocean currents.
+- Provide a higher-energy food source.
+- Yield three times more energy than a diatom.
+
+These pellets represent an important pathway within the marine biological carbon pump, transferring organic matter from surface waters towards the seabed.
+
+---
+
+# 🦠 Diatoms
+
+Diatoms are microscopic phytoplankton that form the primary food source for the copepod.
+
+Features:
+
+- Spawn near the ocean surface.
+- Sink slowly through the water column.
+- Drift horizontally with surrounding water movement.
+- Continuously replenish after consumption.
+
+Diatoms represent primary producers that convert sunlight into biological energy through photosynthesis.
+
+---
+
+# 🦐 Copepod Movement
+
+Movement has been designed to reflect real copepod behaviour.
+
+### Vertical Movement
+
+- Relatively fast.
+- Mimics diel vertical migration.
+- Allows rapid movement between feeding and safer depths.
+
+### Horizontal Movement
+
+- Relatively slow.
+- Reflects the weak horizontal swimming ability of copepods.
+- Makes effective use of currents important.
+
+---
+
+# 🕹 Controls
+
+## Desktop
+
+| Key | Action |
+|------|---------|
+| ↑ | Swim Up |
+| ↓ | Swim Down |
+| ← | Swim Left |
+| → | Swim Right |
+
+## Mobile and Tablet
+
+Touch anywhere on the screen.
+
+The copepod will swim toward your finger position.
+
+Supported gestures:
+
+- Touch Start
+- Touch Move
+- Touch Release
+
+---
+
+# ⏱ Survival Tracking
+
+The game continuously records:
+
+- Current survival time.
+- Session best survival time.
+- Current energy reserve.
+
+Displayed during gameplay:
+
+```text
+ENERGY
+TIME
+BEST
+```
+
+The objective is to maximise survival duration while maintaining positive energy reserves.
+
+---
+
+# 💀 Game Over
+
+The game ends if:
+
+- A fish collides with the copepod.
+- A basking shark collides with the copepod.
+- Energy reserves reach zero (starvation).
+
+The game-over screen displays:
+
+- Remaining energy.
+- Survival time.
+- Best survival time.
 
 Players can immediately restart using the restart button.
 
 ---
 
-## 🕹 Controls
+# 🐠 Ecological Concepts Demonstrated
 
-### Desktop
+The game introduces several real marine ecological processes:
 
-| Key | Action |
-|------|---------|
-| ↑ | Move up |
-| ↓ | Move down |
-| ← | Move left |
-| → | Move right |
-
-### Mobile and Tablet
-
-Touch anywhere on the screen and the copepod will swim towards your finger.
-
-Touch controls support:
-
-- Touch start
-- Touch move
-- Touch release
+- Marine food webs.
+- Predator-prey interactions.
+- Plankton ecology.
+- Diel vertical migration.
+- Metabolic energy budgets.
+- Ocean circulation and transport.
+- Marine heatwaves.
+- Carbon transfer through faecal pellets.
+- The biological carbon pump.
 
 ---
 
-## 🐟 Game Features
-
-### Copepod
-
-- Player-controlled organism
-- Keyboard and touch support
-- Restricted to the game area
-
-### Diatoms
-
-- Continuously drift across the screen
-- Random vertical positions
-- Respawn after collection or leaving the screen
-
-### Fish Predators
-
-- Spawn at fixed intervals
-- Random swimming speeds
-- Random vertical positions
-- Move from right to left across the screen
-- Cause game over upon collision
-
-### Currents
-
-- Currents appear episodically moving in a left-right or right-left direction
-- Moving the copepod into the current provides a way to move rapidly across the screen in on direction
-
-### Scoring System
-
-- Real-time food counter
-- Displayed during play
-- Final score shown on game-over screen
-
----
-
-## 🛠 Technologies
+# 🛠 Technologies
 
 Built using:
 
@@ -130,15 +271,15 @@ No external frameworks or libraries are required.
 
 ---
 
-## 🚀 Running the Game
+# 🚀 Running the Game
 
-### Clone the repository
+## Clone the Repository
 
 ```bash
 git clone https://github.com/Billy-Hunter-AFBI/Copepod-game.git
 ```
 
-### Open the game
+## Open the Game
 
 Open:
 
@@ -148,11 +289,14 @@ index.html
 
 in any modern web browser.
 
-Alternatively, host the files using GitHub Pages or another static web server.
+Alternatively, host the files using:
+
+- GitHub Pages
+- Any static web server
 
 ---
 
-## 📂 Project Structure
+# 📂 Project Structure
 
 ```text
 Copepod-game/
@@ -165,47 +309,53 @@ Copepod-game/
 
 ---
 
-## 🌍 Educational Purpose
+# 🎓 Educational Purpose
 
-This game was created as a lightweight educational resource to demonstrate:
+This game was developed as a lightweight educational resource for outreach, teaching, and science communication.
 
-- Marine food webs
-- Predator-prey interactions
-- The role of plankton in ocean ecosystems
-- Basic game development using JavaScript and HTML5 Canvas
+It is designed to illustrate how environmental conditions and ecological interactions influence the survival of planktonic organisms, while demonstrating several key principles of marine ecology in an interactive format.
 
-It is intended for outreach, education and science communication activities.
+Potential audiences include:
+
+- Schools
+- Universities
+- Science festivals
+- Public engagement activities
+- Marine science outreach events
 
 ---
 
-## Future Development Idea
+# 🔮 Future Development Ideas
 
 Potential future additions include:
 
-- Aggregation of diatoms and faecal pellets to form marine snow (i.e. diatom + faecal pellet = snow; snow + diatom = bigger snow...)
-- Increasing difficulty levels
-- Animated sprites
-- Sound effects
-- High-score tracking
-- Power-ups
+- Marine snow formation and aggregation
+- Seasonal plankton blooms
 - Additional zooplankton species
-- Energy and survival mechanics
-- Marine ecosystem information panels
+- Visual predator avoidance behaviours
+- Animated sprites
+- Sound effects and ambient ocean audio
+- High-score persistence
+- Difficulty levels
+- Ecosystem information panels
+- Carbon export tracking
+- Dynamic weather and ocean conditions
 
 ---
 
-## Author
+# Author
 
 **Billy Hunter**  
 Senior Scientific Officer  
-Agri-Food and Biosciences Institute (AFBI), Belfast, Northern Ireland
+Agri-Food and Biosciences Institute (AFBI)  
+Belfast, Northern Ireland
 
 GitHub: https://github.com/Billy-Hunter-AFBI
 
 ---
 
-## License
+# License
 
 This project is released under the MIT License.
 
-You are free to use, modify and distribute the code for educational and non-commercial purposes.
+You are free to use, modify, and distribute the code for educational
