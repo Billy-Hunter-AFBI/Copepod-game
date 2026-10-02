@@ -1734,7 +1734,7 @@ ctx.fillText(
 
 
         ctx.fillText(
-            "YOU WERE EATEN",
+            "YOU ARE DEAD",
             canvas.width / 2,
             canvas.height / 2
         );
