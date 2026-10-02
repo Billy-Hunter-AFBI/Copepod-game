@@ -178,10 +178,12 @@ It is intended for outreach, education and science communication activities.
 
 ---
 
-## Future Development Ideas
+## Future Development Idea
 
 Potential future additions include:
 
+- Marine Heatwaves and metabolic costs of survival - food score drops with time.
+- Aggregation of diatoms and faecal pellets to form marine snow (i.e. diatom + faecal pellet = snow; snow + diatom = bigger snow...)
 - Increasing difficulty levels
 - Animated sprites
 - Sound effects
