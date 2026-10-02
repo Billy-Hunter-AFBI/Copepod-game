@@ -2,7 +2,7 @@
 
 A simple browser-based educational game inspired by marine food webs.
 
-In this game, you control a copepod, eating sinking diatoms to increase your food score, and avoiding predatory fish. The objective is to survive for as long as possible while gathering food from the surrounding plankton-rich environment. The lateral movement of the sprite is restricted to mimic the fact that copepods are weak swimmers. The vertical motion is more rapid to mimic the dramatic daily vertical migrations that copepods make between deep and shallow water to feed. Diatoms spawn close to the sea surface and slowly drift towards the bottom as they sink. Both Copepod and the diatoms can be caught by currents moving laterally.
+In this game, you control a copepod, eating sinking diatoms to gain energy, and avoiding predatory fish. The objective is to survive for as long as possible while gathering food from the surrounding plankton-rich environment. If your energy drops to 0 you starve to death. The lateral movement of the sprite is restricted to mimic the fact that copepods are weak swimmers. The vertical motion is more rapid to mimic the dramatic daily vertical migrations that copepods make between deep and shallow water to feed. Diatoms spawn close to the sea surface and slowly drift towards the bottom as they sink. Both Copepod and the diatoms can be caught by currents moving laterally.
 
 ---
 
@@ -19,6 +19,7 @@ Diatom → Copepod → Fish
 ```
 
 Players experience the ecological challenge of finding food while avoiding predators.
+The copepod loses energy with time, and this increases with movement. This mimics the metabolic costs of living.
 
 ---
 
@@ -28,7 +29,7 @@ Players experience the ecological challenge of finding food while avoiding preda
 
 - Collect diatoms and faecal pellets to increase your food score.
 - Avoid predatory fish.
-- Avoid filter-feeding basking sharks
+- Avoid filter-feeding basking sharks.
 - Survive as long as possible.
 
 ### Ecological Constraints
@@ -37,14 +38,13 @@ Players experience the ecological challenge of finding food while avoiding preda
 - Vertical movement is more rapid, to mimic diel vertical migration.
 - Episodic Currents provide opportunities to move more rapidly across the playing area.
 - Episodic Basking Sharks provide an additional hazard.
+- Episodic Marine Heatwaves increase the energetic costs of staying close to the surface.
 
 ### Scoring
 
-Each diatom collected increases your score by one point.
-
-```text
-Food Score +1
-```
+Each diatom collected increases your energy score by one point.
+Each faecal pellet collected increases your energy score by three points.
+As time passes your energy score decreases.
 
 ### Game Over
 
@@ -182,7 +182,6 @@ It is intended for outreach, education and science communication activities.
 
 Potential future additions include:
 
-- Marine Heatwaves and metabolic costs of survival - food score drops with time.
 - Aggregation of diatoms and faecal pellets to form marine snow (i.e. diatom + faecal pellet = snow; snow + diatom = bigger snow...)
 - Increasing difficulty levels
 - Animated sprites
