@@ -131,6 +131,9 @@ let gameOver = false;
 // Normal continuous energy expenditure
 const normalMetabolicCost = 0.003;
 
+// Additional energetic cost while swimming
+const swimmingMetabolicCost = 0.0015;
+
 
 // ============================================================
 // MARINE HEATWAVE
@@ -548,6 +551,9 @@ function gameLoop() {
 
     if (!gameOver) {
 
+        // Is the copepod actively swimming?
+        let isSwimming = false;
+
 
         // ----------------------------------------------------
         // KEYBOARD MOVEMENT
@@ -556,24 +562,28 @@ function gameLoop() {
         if (keys["ArrowUp"]) {
 
             copepodY -= verticalSpeed;
+            isSwimming = true;
 
         }
 
         if (keys["ArrowDown"]) {
 
             copepodY += verticalSpeed;
+            isSwimming = true;
 
         }
 
         if (keys["ArrowLeft"]) {
 
             copepodX -= horizontalSpeed;
+            isSwimming = true;
 
         }
 
         if (keys["ArrowRight"]) {
 
             copepodX += horizontalSpeed;
+            isSwimming = true;
 
         }
 
@@ -612,6 +622,8 @@ function gameLoop() {
                 copepodY +=
                     (dy / distance) *
                     verticalSpeed;
+
+                isSwimming = true;
 
             }
 
@@ -671,6 +683,12 @@ if (!heatwaveActive) {
 // Normal metabolism
 food -= normalMetabolicCost;
 
+// Additional metabolic cost of swimming
+if (isSwimming) {
+
+    food -= swimmingMetabolicCost;
+
+}
 
 // Extra metabolic cost if the copepod is inside
 // the warm surface layer during a heatwave
