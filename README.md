@@ -22,7 +22,9 @@ Copepod
 Fish
    ↓
 Faecal Pellets
-   ↑
+
+Faecal Pellets
+   ↓
 Copepod
 
 Basking Shark
