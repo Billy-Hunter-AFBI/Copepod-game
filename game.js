@@ -151,7 +151,7 @@ const heatwaveDepth =
     canvas.height * 0.35;
 
 // Additional metabolic cost while inside warm water
-const heatwaveMetabolicCost = 0.012;
+const heatwaveMetabolicCost = 0.03;
 
 
 // ============================================================
