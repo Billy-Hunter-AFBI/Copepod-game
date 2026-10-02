@@ -1656,27 +1656,37 @@ if (baskingShark) {
 
 
     // --------------------------------------------------------
-    // SCORE
-    // --------------------------------------------------------
+// STATUS DISPLAY
+// --------------------------------------------------------
 
-    ctx.fillStyle = "white";
+ctx.fillStyle = "white";
 
-    ctx.font =
-        "24px monospace";
-
-
-    ctx.fillText(
-        "ENERGY: " + Math.floor(food),
-        20,
-        35
-    );
+ctx.font = "24px monospace";
 
 
-    ctx.fillText(
-        "HIGH: " + highScore,
-        20,
-        65
-    );
+// Energy - whole numbers only
+ctx.fillText(
+    "ENERGY: " + Math.floor(food),
+    20,
+    35
+);
+
+
+// Current survival time
+ctx.fillText(
+    "TIME: " + Math.floor(survivalTime) + "s",
+    20,
+    65
+);
+
+
+// Best survival time
+ctx.fillText(
+    "BEST: " + Math.floor(bestSurvivalTime) + "s",
+    20,
+    95
+);
+
 
 
     // --------------------------------------------------------
@@ -1717,17 +1727,25 @@ if (baskingShark) {
 
 
         ctx.fillText(
-            "Food collected: " + food,
-            canvas.width / 2,
-            canvas.height / 2 + 40
-        );
+    "Energy remaining: " + Math.floor(food),
+    canvas.width / 2,
+    canvas.height / 2 + 40
+);
 
 
-        ctx.fillText(
-            "High score: " + highScore,
-            canvas.width / 2,
-            canvas.height / 2 + 70
-        );
+ctx.fillText(
+    "Survived: " + Math.floor(survivalTime) + " seconds",
+    canvas.width / 2,
+    canvas.height / 2 + 70
+);
+
+
+ctx.fillText(
+    "Best: " + Math.floor(bestSurvivalTime) + " seconds",
+    canvas.width / 2,
+    canvas.height / 2 + 100
+);
+
 
 
         ctx.textAlign =
