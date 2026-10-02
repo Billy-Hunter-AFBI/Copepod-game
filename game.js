@@ -117,7 +117,9 @@ const currentDuration = 300;
 // ============================================================
 
 let food = 5;
-let highScore = 5;
+
+let survivalTime = 0;
+let bestSurvivalTime = 0;
 
 let gameOver = false;
 
@@ -492,6 +494,9 @@ function restartGame() {
     // Reset Basking Shark
     baskingShark = null;
 
+    // Reset Survival Time
+    survivalTime = 0;
+
 sharkTimer = 0;
 
 sharkWarning = false;
@@ -612,7 +617,19 @@ function gameLoop() {
 
         }
 
-        // ----------------------------------------------------
+// ----------------------------------------------------
+// SURVIVAL TIMER
+// ----------------------------------------------------
+
+        survivalTime += 1 / 60;
+
+        if(survivalTime > bestSurvivalTime) {
+
+            bestSurvivalTime = survivalTime;
+
+        }
+
+// ----------------------------------------------------
 // MARINE HEATWAVE SYSTEM
 // ----------------------------------------------------
 
@@ -847,12 +864,6 @@ if (food <= 0) {
                 food += 1;
 
 
-                if (food > highScore) {
-
-                    highScore = food;
-
-                }
-
 
                 // Remove eaten diatom
                 diatoms.splice(i, 1);
@@ -948,13 +959,6 @@ for (
     ) {
 
         food += pelletFoodValue;
-
-
-        if (food > highScore) {
-
-            highScore = food;
-
-        }
 
 
         pellets.splice(i, 1);
