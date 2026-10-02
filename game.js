@@ -116,10 +116,40 @@ const currentDuration = 300;
 // GAME STATE
 // ============================================================
 
-let food = 0;
-let highScore = 0;
+let food = 5;
+let highScore = 5;
 
 let gameOver = false;
+
+
+// ============================================================
+// METABOLISM
+// ============================================================
+
+// Normal continuous energy expenditure
+const normalMetabolicCost = 0.003;
+
+
+// ============================================================
+// MARINE HEATWAVE
+// ============================================================
+
+let heatwaveActive = false;
+let heatwaveTimer = 0;
+
+// First heatwave occurs after roughly 30–70 seconds
+let nextHeatwaveTime =
+    1800 + Math.random() * 2400;
+
+// Heatwave lasts approximately 10 seconds
+const heatwaveDuration = 600;
+
+// Heatwave affects upper 35% of water column
+const heatwaveDepth =
+    canvas.height * 0.35;
+
+// Additional metabolic cost while inside warm water
+const heatwaveMetabolicCost = 0.012;
 
 
 // ============================================================
@@ -439,8 +469,8 @@ function objectInCurrent(y, height) {
 
 function restartGame() {
 
-    // Reset current score
-    food = 0;
+    // Reset energy reserve
+    food = 5;
 
     // High score deliberately remains
 
@@ -469,6 +499,13 @@ sharkWarningTimer = 0;
 
 nextSharkTime =
     1800 + Math.random() * 1800;
+
+    // Reset marine heatwave
+    heatwaveActive = false;
+    heatwaveTimer = 0;
+
+    nextHeatwaveTime = 
+        1800 + Math.random() * 2400;
 
 
     // Reset current
@@ -574,6 +611,75 @@ function gameLoop() {
             }
 
         }
+
+        // ----------------------------------------------------
+// MARINE HEATWAVE SYSTEM
+// ----------------------------------------------------
+
+if (!heatwaveActive) {
+
+    heatwaveTimer++;
+
+    // Start heatwave
+    if (heatwaveTimer >= nextHeatwaveTime) {
+
+        heatwaveActive = true;
+        heatwaveTimer = 0;
+
+    }
+
+} else {
+
+    heatwaveTimer++;
+
+    // End heatwave
+    if (heatwaveTimer >= heatwaveDuration) {
+
+        heatwaveActive = false;
+        heatwaveTimer = 0;
+
+        // Next heatwave in roughly 30–70 seconds
+        nextHeatwaveTime =
+            1800 + Math.random() * 2400;
+
+    }
+
+}
+
+
+// ----------------------------------------------------
+// METABOLIC COST
+// ----------------------------------------------------
+
+// Normal metabolism
+food -= normalMetabolicCost;
+
+
+// Extra metabolic cost if the copepod is inside
+// the warm surface layer during a heatwave
+if (
+    heatwaveActive &&
+    copepodY < heatwaveDepth
+) {
+
+    food -= heatwaveMetabolicCost;
+
+}
+
+
+// Starvation
+if (food <= 0) {
+
+    food = 0;
+
+    gameOver = true;
+
+    touchActive = false;
+
+    restartButton.style.display = "block";
+
+}
+
 
 
         // ----------------------------------------------------
@@ -1084,6 +1190,42 @@ if (baskingShark) {
         canvas.height
     );
 
+    // --------------------------------------------------------
+// DRAW MARINE HEATWAVE
+// --------------------------------------------------------
+
+if (heatwaveActive) {
+
+    // Warm surface layer
+    ctx.fillStyle =
+        "rgba(255, 90, 120, 0.28)";
+
+    ctx.fillRect(
+        0,
+        0,
+        canvas.width,
+        heatwaveDepth
+    );
+
+
+    // Label
+    ctx.fillStyle = "white";
+
+    ctx.font = "bold 18px monospace";
+
+    ctx.textAlign = "right";
+
+    ctx.fillText(
+        "MARINE HEATWAVE",
+        canvas.width - 20,
+        30
+    );
+
+    ctx.textAlign = "left";
+
+}
+
+
 
     // --------------------------------------------------------
     // DRAW CURRENT
@@ -1520,7 +1662,7 @@ if (baskingShark) {
 
 
     ctx.fillText(
-        "FOOD: " + food,
+        "ENERGY: " + Math.floor(food),
         20,
         35
     );
