@@ -111,6 +111,13 @@ const currentInterval = 600;
 // Current lasts approximately 5 seconds
 const currentDuration = 300;
 
+// ============================================================
+// LEADERBOARD
+// ============================================================
+let leaderboard =
+    JSON.parse(localStorage.getItem("copepodLeaderboard")) || [];
+ 
+let scoreSubmitted = false;
 
 // ============================================================
 // GAME STATE
@@ -470,6 +477,90 @@ function objectInCurrent(y, height) {
 
 }
 
+// ============================================================
+// SAVE SCORE TO LEADERBOARD
+// ============================================================
+
+function addScore(name, time) {
+ 
+    leaderboard.push({
+        name: name,
+        time: time
+    });
+ 
+    leaderboard.sort(function(a, b) {
+        return b.time - a.time;
+    });
+ 
+    leaderboard = leaderboard.slice(0, 10);
+ 
+    localStorage.setItem(
+        "copepodLeaderboard",
+        JSON.stringify(leaderboard)
+    );
+}
+
+// Time formatting function
+
+function formatTime(seconds) {
+ 
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+ 
+    return (
+        String(minutes).padStart(2, "0") +
+        ":" +
+        String(remainingSeconds).padStart(2, "0")
+    );
+}
+
+// Decide whether a finished run qualifies 
+
+function qualifiesForLeaderboard(time) {
+ 
+    if (leaderboard.length < 10) {
+        return true;
+    }
+ 
+    return time > leaderboard[leaderboard.length - 1].time;
+}
+
+// Collect Initials and submit score
+
+function submitLocalScore() {
+ 
+    if (scoreSubmitted) {
+        return;
+    }
+ 
+    scoreSubmitted = true;
+ 
+    if (!qualifiesForLeaderboard(survivalTime)) {
+        return;
+    }
+ 
+    let playerName = prompt(
+        "New high score! Enter your initials:"
+    );
+ 
+    if (!playerName) {
+        playerName = "AAA";
+    }
+ 
+    playerName = playerName
+        .trim()
+        .toUpperCase()
+        .slice(0, 3);
+ 
+    if (playerName.length === 0) {
+        playerName = "AAA";
+    }
+ 
+    addScore(playerName, survivalTime);
+}
+
+
+
 
 // ============================================================
 // RESTART GAME
@@ -503,6 +594,9 @@ function restartGame() {
     // Reset Survival Time
     survivalTime = 0;
     lastFrameTime = null;
+
+    // Reset Score Submission
+    scoreSubmitted = false;
 
 sharkTimer = 0;
 
@@ -722,6 +816,8 @@ if (food <= 0) {
     food = 0;
 
     gameOver = true;
+
+    submitLocalScore();
 
     touchActive = false;
 
@@ -1022,7 +1118,7 @@ pellets = pellets.filter(
     }
 );
 
-        // ----------------------------------------------------
+// ----------------------------------------------------
 // BASKING SHARK EVENT
 // ----------------------------------------------------
 
@@ -1059,6 +1155,8 @@ if (sharkWarning) {
     ) {
 
         sharkWarning = false;
+
+        submitLocalScore();
 
         spawnBaskingShark();
 
@@ -1179,6 +1277,8 @@ if (baskingShark) {
             ) {
 
                 gameOver = true;
+
+                submitLocalScore();
 
                 touchActive = false;
 
@@ -1727,64 +1827,96 @@ ctx.fillText(
 
     if (gameOver) {
 
-        ctx.fillStyle =
-            "rgba(0, 0, 0, 0.6)";
+    ctx.fillStyle =
+        "rgba(0, 0, 0, 0.7)";
 
-        ctx.fillRect(
-            0,
-            0,
-            canvas.width,
-            canvas.height
-        );
+    ctx.fillRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
 
+    ctx.fillStyle = "white";
+    ctx.textAlign = "center";
 
-        ctx.fillStyle = "white";
+    // Title
+    ctx.font = "bold 40px monospace";
 
-        ctx.font =
-            "40px monospace";
+    ctx.fillText(
+        "YOU ARE DEAD",
+        canvas.width / 2,
+        80
+    );
 
-        ctx.textAlign =
-            "center";
+    // Statistics
+    ctx.font = "20px monospace";
 
+    ctx.fillText(
+        "Energy remaining: " + Math.floor(food),
+        canvas.width / 2,
+        120
+    );
+
+    ctx.fillText(
+        "Survived: " + formatTime(survivalTime),
+        canvas.width / 2,
+        150
+    );
+
+    ctx.fillText(
+        "Best: " + formatTime(bestSurvivalTime),
+        canvas.width / 2,
+        180
+    );
+
+    // Leaderboard title
+    ctx.font = "bold 20px monospace";
+
+    ctx.fillText(
+        "LOCAL LEADERBOARD",
+        canvas.width / 2,
+        230
+    );
+
+    // Leaderboard entries
+    ctx.font = "18px monospace";
+
+    if (leaderboard.length === 0) {
 
         ctx.fillText(
-            "YOU ARE DEAD",
+            "NO SCORES YET",
             canvas.width / 2,
-            canvas.height / 2
+            260
         );
 
+    } else {
 
-        ctx.font =
-            "20px monospace";
+        for (
+            let i = 0;
+            i < leaderboard.length;
+            i++
+        ) {
 
+            const entry = leaderboard[i];
 
-        ctx.fillText(
-    "Energy remaining: " + Math.floor(food),
-    canvas.width / 2,
-    canvas.height / 2 + 40
-);
+            ctx.fillText(
+                (i + 1) +
+                ". " +
+                entry.name +
+                "   " +
+                formatTime(entry.time),
+                canvas.width / 2,
+                260 + (i * 20)
+            );
 
-
-ctx.fillText(
-    "Survived: " + Math.floor(survivalTime) + " seconds",
-    canvas.width / 2,
-    canvas.height / 2 + 70
-);
-
-
-ctx.fillText(
-    "Best: " + Math.floor(bestSurvivalTime) + " seconds",
-    canvas.width / 2,
-    canvas.height / 2 + 100
-);
-
-
-
-        ctx.textAlign =
-            "left";
+        }
 
     }
 
+    ctx.textAlign = "left";
+
+}
 
     // --------------------------------------------------------
     // NEXT FRAME
