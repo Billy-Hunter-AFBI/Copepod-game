@@ -1179,6 +1179,8 @@ if (baskingShark) {
 
         gameOver = true;
 
+        submitLocalScore();
+
         if (!gameOver) {
 
         // Is the copepod actively swimming?
@@ -1675,8 +1677,6 @@ if (sharkWarning) {
     ) {
 
         sharkWarning = false;
-
-        submitLocalScore();
 
         spawnBaskingShark();
 
