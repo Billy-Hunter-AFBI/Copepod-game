@@ -121,6 +121,9 @@ let food = 5;
 let survivalTime = 0;
 let bestSurvivalTime = 0;
 
+// Used to calculate real elapsed time
+let lastFrameTime = null;
+
 let gameOver = false;
 
 
@@ -499,6 +502,7 @@ function restartGame() {
 
     // Reset Survival Time
     survivalTime = 0;
+    lastFrameTime = null;
 
 sharkTimer = 0;
 
@@ -542,7 +546,19 @@ restartButton.addEventListener(
 // GAME LOOP
 // ============================================================
 
-function gameLoop() {
+function gameLoop(timestamp) {
+
+// ----------------------------------------------------
+// FRAME TIMING
+// ----------------------------------------------------
+ 
+if (lastFrameTime === null) {
+    lastFrameTime = timestamp;
+}
+ 
+const deltaTime = (timestamp - lastFrameTime) / 1000;
+ 
+lastFrameTime = timestamp;
 
 
     // ========================================================
@@ -633,13 +649,11 @@ function gameLoop() {
 // SURVIVAL TIMER
 // ----------------------------------------------------
 
-        survivalTime += 1 / 60;
-
-        if(survivalTime > bestSurvivalTime) {
-
-            bestSurvivalTime = survivalTime;
-
-        }
+        survivalTime += deltaTime;
+ 
+if (survivalTime > bestSurvivalTime) {
+    bestSurvivalTime = survivalTime;
+}
 
 // ----------------------------------------------------
 // MARINE HEATWAVE SYSTEM
@@ -1788,5 +1802,5 @@ ctx.fillText(
 // ============================================================
 
 initialiseDiatoms();
-
-gameLoop();
+ 
+requestAnimationFrame(gameLoop);
