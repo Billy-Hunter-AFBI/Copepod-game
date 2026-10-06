@@ -1172,17 +1172,21 @@ if (baskingShark) {
 
     // Check collision
     if (
-        copepodTouchesShark(
-            baskingShark
-        )
-    ) {
+    copepodTouchesShark(
+        baskingShark
+    )
+) {
 
-        gameOver = true;
+    gameOver = true;
 
-        submitLocalScore();
+    submitLocalScore();
 
-        if (!gameOver) {
+    touchActive = false;
 
+    restartButton.style.display =
+        "block";
+
+}
         // Is the copepod actively swimming?
         let isSwimming = false;
 
