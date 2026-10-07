@@ -126,6 +126,35 @@ let lastFrameTime = null;
 
 let gameOver = false;
 
+// ============================================================
+// LOCAL LEADERBOARD
+// ============================================================
+
+const LEADERBOARD_KEY = "copepodLeaderboard";
+const LEADERBOARD_SIZE = 5;
+
+// Load saved scores from this browser
+let leaderboard = JSON.parse(
+    localStorage.getItem(LEADERBOARD_KEY) || "[]"
+);
+
+function saveLocalScore(score) {
+
+    leaderboard.push(score);
+
+    // Sort from longest survival time to shortest
+    leaderboard.sort((a, b) => b - a);
+
+    // Keep only the top five
+    leaderboard = leaderboard.slice(0, LEADERBOARD_SIZE);
+
+    // Save back to the browser
+    localStorage.setItem(
+        LEADERBOARD_KEY,
+        JSON.stringify(leaderboard)
+    );
+}
+
 
 // ============================================================
 // METABOLISM
