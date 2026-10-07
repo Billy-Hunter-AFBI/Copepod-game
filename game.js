@@ -157,6 +157,32 @@ function saveLocalScore(score) {
 
 
 // ============================================================
+// GAME OVER
+// ============================================================
+
+function endGame() {
+
+    // Prevent the same run being recorded more than once
+    if (gameOver) return;
+
+    gameOver = true;
+
+    // Save this run to the local leaderboard
+    saveLocalScore(survivalTime);
+
+    // Preserve existing best-time behaviour
+    if (survivalTime > bestSurvivalTime) {
+        bestSurvivalTime = survivalTime;
+    }
+
+    // Stop active touch input
+    touchActive = false;
+
+    // Show restart button
+    restartButton.style.display = "block";
+}
+
+// ============================================================
 // METABOLISM
 // ============================================================
 
