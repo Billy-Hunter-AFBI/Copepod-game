@@ -776,13 +776,10 @@ if (food <= 0) {
 
     food = 0;
 
-    gameOver = true;
-
-    touchActive = false;
-
-    restartButton.style.display = "block";
+    endGame();
 
 }
+
 
 
 
